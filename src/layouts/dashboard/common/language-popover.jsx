@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import Box from '@mui/material/Box';
 import Popover from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
@@ -29,6 +28,7 @@ const LANGS = [
 
 export default function LanguagePopover() {
   const [open, setOpen] = useState(null);
+  const [selectedLang, setSelectedLang] = useState(LANGS[0].value);
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -36,6 +36,12 @@ export default function LanguagePopover() {
 
   const handleClose = () => {
     setOpen(null);
+    setSelectedLang(LANGS[0].value);
+  };
+
+  const handleChange = (event) => {
+    setSelectedLang(event.target.value);
+    handleClose();
   };
 
   return (
@@ -50,7 +56,7 @@ export default function LanguagePopover() {
           }),
         }}
       >
-        <img src={LANGS[0].icon} alt={LANGS[0].label} />
+        <img src={LANGS.find(lang => lang.value === selectedLang)?.icon} alt={LANGS.find(lang => lang.value === selectedLang)?.label} />
       </IconButton>
 
       <Popover
@@ -67,20 +73,15 @@ export default function LanguagePopover() {
             width: 180,
           },
         }}
+        keyboard
+        disablePortal
       >
         {LANGS.map((option) => (
           <MenuItem
             key={option.value}
-            selected={option.value === LANGS[0].value}
-            onClick={() => handleClose()}
+            value={option.value}
+            selected={option.value === selectedLang}
+            onClick={handleChange}
             sx={{ typography: 'body2', py: 1 }}
           >
-            <Box component="img" alt={option.label} src={option.icon} sx={{ width: 28, mr: 2 }} />
-
-            {option.label}
-          </MenuItem>
-        ))}
-      </Popover>
-    </>
-  );
-}
+            <Box component="img" alt={option.label} src={option.icon
