@@ -11,7 +11,27 @@ import { fCurrency } from 'src/utils/format-number';
 import Label from 'src/components/label';
 import { ColorPreview } from 'src/components/color-utils';
 
-// ----------------------------------------------------------------------
+ShopProductCard.defaultProps = {
+  product: {
+    status: '',
+    name: '',
+    cover: '',
+    price: 0,
+    priceSale: 0,
+    colors: [],
+  },
+};
+
+ShopProductCard.propTypes = {
+  product: PropTypes.shape({
+    status: PropTypes.string,
+    name: PropTypes.string,
+    cover: PropTypes.string,
+    price: PropTypes.number,
+    priceSale: PropTypes.number,
+    colors: PropTypes.arrayOf(PropTypes.string),
+  }),
+};
 
 export default function ShopProductCard({ product }) {
   const renderStatus = (
@@ -35,6 +55,7 @@ export default function ShopProductCard({ product }) {
       component="img"
       alt={product.name}
       src={product.cover}
+      title={product.name}
       sx={{
         top: 0,
         width: 1,
@@ -46,7 +67,7 @@ export default function ShopProductCard({ product }) {
   );
 
   const renderPrice = (
-    <Typography variant="subtitle1">
+    <Typography variant="subtitle1" fontWeight="bold">
       <Typography
         component="span"
         variant="body1"
@@ -71,19 +92,6 @@ export default function ShopProductCard({ product }) {
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
-        <Link color="inherit" underline="hover" variant="subtitle2" noWrap>
-          {product.name}
-        </Link>
-
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <ColorPreview colors={product.colors} />
-          {renderPrice}
-        </Stack>
-      </Stack>
-    </Card>
-  );
-}
-
-ShopProductCard.propTypes = {
-  product: PropTypes.object,
-};
+        <Link
+          color="inherit"
+         
