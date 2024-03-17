@@ -1,17 +1,14 @@
 import { Helmet } from 'react-helmet-async';
+import LoginView from 'src/sections/login/LoginView';
 
-import { LoginView } from 'src/sections/login';
-
-// ----------------------------------------------------------------------
-
-export default function LoginPage() {
+const LoginPage = () => {
   return (
     <>
-      <Helmet>
-        <title> Login | Minimal UI </title>
-      </Helmet>
-
+      <Helmet title="Login | Minimal UI" />
       <LoginView />
     </>
   );
-}
+};
+
+export default LoginPage;
+
