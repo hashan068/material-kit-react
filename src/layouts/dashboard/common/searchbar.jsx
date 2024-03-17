@@ -1,18 +1,8 @@
-import { useState } from 'react';
-
-import Slide from '@mui/material/Slide';
-import Input from '@mui/material/Input';
-import Button from '@mui/material/Button';
+import { useState, useEffect } from 'react';
+import { Slide, Input, Button, ClickAwayListener, InputAdornment } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-
-import { bgBlur } from 'src/theme/css';
-
 import Iconify from 'src/components/iconify';
-
-// ----------------------------------------------------------------------
 
 const HEADER_MOBILE = 64;
 const HEADER_DESKTOP = 92;
@@ -37,7 +27,46 @@ const StyledSearchbar = styled('div')(({ theme }) => ({
   },
 }));
 
-// ----------------------------------------------------------------------
+const debounce = (func, wait) => {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+};
+
+const Search = ({ onSearch }) => {
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleChange = (event) => {
+    setSearchValue(event.target.value);
+  };
+
+  useEffect(() => {
+    debounce(() => {
+      onSearch(searchValue);
+    }, 500)();
+  }, [searchValue]);
+
+  return (
+    <Input
+      fullWidth
+      disableUnderline
+      placeholder="Search…"
+      startAdornment={
+        <InputAdornment position="start">
+          <Iconify
+            icon="eva:search-fill"
+            sx={{ color: 'text.disabled', width: 20, height: 20 }}
+          />
+        </InputAdornment>
+      }
+      value={searchValue}
+      onChange={handleChange}
+      sx={{ mr: 1, fontWeight: 'fontWeightBold' }}
+    />
+  );
+};
 
 export default function Searchbar() {
   const [open, setOpen] = useState(false);
@@ -48,6 +77,11 @@ export default function Searchbar() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleSearch = (searchValue) => {
+    console.log(`Searching for: ${searchValue}`);
+    // Perform search request here
   };
 
   return (
@@ -61,27 +95,8 @@ export default function Searchbar() {
 
         <Slide direction="down" in={open} mountOnEnter unmountOnExit>
           <StyledSearchbar>
-            <Input
-              autoFocus
-              fullWidth
-              disableUnderline
-              placeholder="Search…"
-              startAdornment={
-                <InputAdornment position="start">
-                  <Iconify
-                    icon="eva:search-fill"
-                    sx={{ color: 'text.disabled', width: 20, height: 20 }}
-                  />
-                </InputAdornment>
-              }
-              sx={{ mr: 1, fontWeight: 'fontWeightBold' }}
-            />
+            <Search onSearch={handleSearch} />
             <Button variant="contained" onClick={handleClose}>
               Search
             </Button>
-          </StyledSearchbar>
-        </Slide>
-      </div>
-    </ClickAwayListener>
-  );
-}
+          </Styled
