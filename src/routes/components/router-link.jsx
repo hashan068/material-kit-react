@@ -1,13 +1,30 @@
 import PropTypes from 'prop-types';
-import { forwardRef } from 'react';
-import { Link } from 'react-router-dom';
+import { forwardRef, useRef } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
-const RouterLink = forwardRef(({ href, ...other }, ref) => <Link ref={ref} to={href} {...other} />);
+const Link = forwardRef(({ href, children, ...other }, ref) => {
+  const routerLinkRef = useRef(null);
 
-RouterLink.propTypes = {
+  return (
+    <RouterLink
+      ref={ref || routerLinkRef}
+      to={href}
+      {...other}
+    >
+      {children}
+    </RouterLink>
+  );
+});
+
+Link.propTypes = {
   href: PropTypes.string,
+  children: PropTypes.node,
 };
 
-export default RouterLink;
+Link.defaultProps = {
+  children: null,
+};
+
+export default Link;
