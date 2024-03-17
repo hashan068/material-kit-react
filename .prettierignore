@@ -1,9 +1,17 @@
-build/*
-dist/*
-public/*
-**/out/*
-**/.next/*
-**/node_modules/*
+# .gitignore
 
+# Directories
+build/
+dist/
+public/
+**/out/
+**/.next/
+**/node_modules/
+
+# Lock files
 package-lock.json
 yarn.lock
+
+# Optional: ignore any large log files or other files that don't need to be tracked
+*.log
+*.tmp
