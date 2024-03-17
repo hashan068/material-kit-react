@@ -1,31 +1,16 @@
 import PropTypes from 'prop-types';
 import { forwardRef } from 'react';
-
 import Box from '@mui/material/Box';
 
 // ----------------------------------------------------------------------
 
-const SvgColor = forwardRef(({ src, sx, ...other }, ref) => (
-  <Box
-    component="span"
-    className="svg-color"
-    ref={ref}
-    sx={{
-      width: 24,
-      height: 24,
-      display: 'inline-block',
-      bgcolor: 'currentColor',
-      mask: `url(${src}) no-repeat center / contain`,
-      WebkitMask: `url(${src}) no-repeat center / contain`,
-      ...sx,
-    }}
-    {...other}
-  />
-));
+const SvgColor = forwardRef(({ src = '', sx = {}, ref, ...other }, ref) => {
+  const validSx =
+    typeof sx === 'object' &&
+    !(Array.isArray(sx) && sx.some(value => typeof value !== 'object'));
 
-SvgColor.propTypes = {
-  src: PropTypes.string,
-  sx: PropTypes.object,
-};
+  return (
+    <Box
+      component="span"
+      className="svg-color"
 
-export default SvgColor;
