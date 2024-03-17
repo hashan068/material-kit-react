@@ -1,15 +1,11 @@
 import PropTypes from 'prop-types';
-
+import React from 'react';
+import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import { styled, useTheme } from '@mui/material/styles';
-
-import Chart, { useChart } from 'src/components/chart';
-
-// ----------------------------------------------------------------------
+import Chart from 'src/components/chart';
 
 const CHART_HEIGHT = 400;
-
 const LEGEND_HEIGHT = 72;
 
 const StyledChart = styled(Chart)(({ theme }) => ({
@@ -24,10 +20,23 @@ const StyledChart = styled(Chart)(({ theme }) => ({
   },
 }));
 
-// ----------------------------------------------------------------------
+export default function AppCurrentSubject({ chart, subheader, title, ...other }) {
+  const theme = React.useTheme();
 
-export default function AppCurrentSubject({ title, subheader, chart, ...other }) {
-  const theme = useTheme();
+  if (!chart) {
+    console.error('Missing chart data');
+    return null;
+  }
+
+  if (
+    !Array.isArray(chart.series) ||
+    !Array.isArray(chart.categories) ||
+    !Array.isArray(chart.colors) ||
+    typeof chart.options !== 'object'
+  ) {
+    console.error('Invalid chart data');
+    return null;
+  }
 
   const { series, colors, categories, options } = chart;
 
@@ -51,28 +60,4 @@ export default function AppCurrentSubject({ title, subheader, chart, ...other })
           colors: [...Array(6)].map(() => theme.palette.text.secondary),
         },
       },
-    },
-    ...options,
-  });
-
-  return (
-    <Card {...other}>
-      <CardHeader title={title} subheader={subheader} sx={{ mb: 5 }} />
-
-      <StyledChart
-        dir="ltr"
-        type="radar"
-        series={series}
-        options={chartOptions}
-        width="100%"
-        height={340}
-      />
-    </Card>
-  );
-}
-
-AppCurrentSubject.propTypes = {
-  chart: PropTypes.object,
-  subheader: PropTypes.string,
-  title: PropTypes.string,
-};
+   
