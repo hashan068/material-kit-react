@@ -17,14 +17,16 @@ import Iconify from 'src/components/iconify';
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
-  selected,
-  name,
-  avatarUrl,
-  company,
-  role,
-  isVerified,
-  status,
-  handleClick,
+  key,
+  selected = false,
+  name = '',
+  avatarUrl = '',
+  company = '',
+  role = '',
+  isVerified = false,
+  status = '',
+  handleClick = () => {},
+  onClose = () => {},
 }) {
   const [open, setOpen] = useState(null);
 
@@ -34,19 +36,20 @@ export default function UserTableRow({
 
   const handleCloseMenu = () => {
     setOpen(null);
+    onClose();
   };
 
   return (
     <>
-      <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
+      <TableRow hover tabIndex={-1} role="checkbox" selected={selected} key={key}>
         <TableCell padding="checkbox">
           <Checkbox disableRipple checked={selected} onChange={handleClick} />
         </TableCell>
 
         <TableCell component="th" scope="row" padding="none">
           <Stack direction="row" alignItems="center" spacing={2}>
-            <Avatar alt={name} src={avatarUrl} />
-            <Typography variant="subtitle2" noWrap>
+            <Avatar alt={name} src={avatarUrl} size="sm" />
+            <Typography variant="sm" noWrap>
               {name}
             </Typography>
           </Stack>
@@ -78,6 +81,7 @@ export default function UserTableRow({
         PaperProps={{
           sx: { width: 140 },
         }}
+        edge="right"
       >
         <MenuItem onClick={handleCloseMenu}>
           <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
@@ -102,4 +106,6 @@ UserTableRow.propTypes = {
   role: PropTypes.any,
   selected: PropTypes.any,
   status: PropTypes.string,
+  onClose: PropTypes.func,
 };
+
