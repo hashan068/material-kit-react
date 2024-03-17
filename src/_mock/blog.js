@@ -1,7 +1,9 @@
 import { faker } from '@faker-js/faker';
 
-// ----------------------------------------------------------------------
+// Define the number of posts to generate
+const NUM_POSTS = 23;
 
+// Define the array of post titles
 const POST_TITLES = [
   'Whiteboard Templates By Industry Leaders',
   'Tesla Cybertruck-inspired camper trailer for Tesla fans who can’t just wait for the truck!',
@@ -29,17 +31,20 @@ const POST_TITLES = [
   'How to Animate a SVG with border-image',
 ];
 
-export const posts = [...Array(23)].map((_, index) => ({
+// Generate the array of posts
+const posts = Array.from({ length: NUM_POSTS }, (_, index) => ({
   id: faker.string.uuid(),
   cover: `/assets/images/covers/cover_${index + 1}.jpg`,
-  title: POST_TITLES[index + 1],
+  title: POST_TITLES[index] || `Post ${index + 1}`, // Use a fallback title if the index is out of bounds
   createdAt: faker.date.past(),
-  view: faker.number.int(99999),
-  comment: faker.number.int(99999),
-  share: faker.number.int(99999),
-  favorite: faker.number.int(99999),
+  view: faker.number.int({ min: 0, max: 99999 }), // Use a random number between 0 and 99999
+  comment: faker.number.int({ min: 0, max: 99999 }),
+  share: faker.number.int({ min: 0, max: 99999 }),
+  favorite: faker.number.int({ min: 0, max: 99999 }),
   author: {
     name: faker.person.fullName(),
     avatarUrl: `/assets/images/avatars/avatar_${index + 1}.jpg`,
   },
 }));
+
+// Export the posts
