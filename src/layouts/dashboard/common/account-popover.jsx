@@ -44,6 +44,9 @@ export default function AccountPopover() {
   return (
     <>
       <IconButton
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
         onClick={handleOpen}
         sx={{
           width: 40,
@@ -106,6 +109,7 @@ export default function AccountPopover() {
           disableRipple
           disableTouchRipple
           onClick={handleClose}
+          type="button"
           sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
         >
           Logout
@@ -114,3 +118,4 @@ export default function AccountPopover() {
     </>
   );
 }
+
