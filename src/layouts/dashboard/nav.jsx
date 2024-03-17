@@ -1,24 +1,19 @@
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
-
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
-import { alpha } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-import ListItemButton from '@mui/material/ListItemButton';
-
 import { usePathname } from 'src/routes/hooks';
-import { RouterLink } from 'src/routes/components';
-
 import { useResponsive } from 'src/hooks/use-responsive';
-
-import { account } from 'src/_mock/account';
-
-import Logo from 'src/components/logo';
+import { alpha } from '@mui/material/styles';
+import {
+  Box,
+  Stack,
+  Drawer,
+  Button,
+  Avatar,
+  Typography,
+  ListItemButton,
+  Link as RouterLink,
+} from '@mui/material';
 import Scrollbar from 'src/components/scrollbar';
+import Logo from 'src/components/logo';
 
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
@@ -27,7 +22,6 @@ import navConfig from './config-navigation';
 
 export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
-
   const upLg = useResponsive('up', 'lg');
 
   useEffect(() => {
@@ -37,7 +31,7 @@ export default function Nav({ openNav, onCloseNav }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
-  const renderAccount = (
+  const renderAccount = () => (
     <Box
       sx={{
         my: 3,
@@ -62,7 +56,7 @@ export default function Nav({ openNav, onCloseNav }) {
     </Box>
   );
 
-  const renderMenu = (
+  const renderMenu = () => (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
       {navConfig.map((item) => (
         <NavItem key={item.title} item={item} />
@@ -70,9 +64,13 @@ export default function Nav({ openNav, onCloseNav }) {
     </Stack>
   );
 
-  const renderUpgrade = (
+  const renderUpgrade = () => (
     <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
-      <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
+      <Stack
+        alignItems="center"
+        spacing={3}
+        sx={{ pt: 5, borderRadius: 2, position: 'relative' }}
+      >
         <Box
           component="img"
           src="/assets/illustrations/illustration_avatar.png"
@@ -99,7 +97,7 @@ export default function Nav({ openNav, onCloseNav }) {
     </Box>
   );
 
-  const renderContent = (
+  const renderContent = () => (
     <Scrollbar
       sx={{
         height: 1,
@@ -112,13 +110,13 @@ export default function Nav({ openNav, onCloseNav }) {
     >
       <Logo sx={{ mt: 3, ml: 4 }} />
 
-      {renderAccount}
+      {renderAccount()}
 
-      {renderMenu}
+      {renderMenu()}
 
       <Box sx={{ flexGrow: 1 }} />
 
-      {renderUpgrade}
+      {renderUpgrade()}
     </Scrollbar>
   );
 
@@ -138,7 +136,7 @@ export default function Nav({ openNav, onCloseNav }) {
             borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
           }}
         >
-          {renderContent}
+          {renderContent()}
         </Box>
       ) : (
         <Drawer
@@ -150,7 +148,7 @@ export default function Nav({ openNav, onCloseNav }) {
             },
           }}
         >
-          {renderContent}
+          {renderContent()}
         </Drawer>
       )}
     </Box>
@@ -158,8 +156,8 @@ export default function Nav({ openNav, onCloseNav }) {
 }
 
 Nav.propTypes = {
-  openNav: PropTypes.bool,
-  onCloseNav: PropTypes.func,
+  openNav: PropTypes.bool.isRequired,
+  onCloseNav: PropTypes.func.isRequired,
 };
 
 // ----------------------------------------------------------------------
@@ -190,15 +188,6 @@ function NavItem({ item }) {
         }),
       }}
     >
-      <Box component="span" sx={{ width: 24, height: 24, mr: 2 }}>
-        {item.icon}
-      </Box>
-
-      <Box component="span">{item.title} </Box>
-    </ListItemButton>
-  );
-}
-
-NavItem.propTypes = {
-  item: PropTypes.object,
-};
+      <Box
+        component="span"
+        sx={{ width: 24, height: 24, mr: 2, display: 'flex
