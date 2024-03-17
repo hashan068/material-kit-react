@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { visuallyHidden } from './utils';
 
 import Box from '@mui/material/Box';
 import TableRow from '@mui/material/TableRow';
@@ -6,8 +7,6 @@ import Checkbox from '@mui/material/Checkbox';
 import TableHead from '@mui/material/TableHead';
 import TableCell from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
-
-import { visuallyHidden } from './utils';
 
 // ----------------------------------------------------------------------
 
@@ -20,7 +19,7 @@ export default function UserTableHead({
   onRequestSort,
   onSelectAllClick,
 }) {
-  const onSort = (property) => (event) => {
+  const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
 
@@ -46,7 +45,7 @@ export default function UserTableHead({
               hideSortIcon
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={onSort(headCell.id)}
+              onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
@@ -66,7 +65,17 @@ UserTableHead.propTypes = {
   order: PropTypes.oneOf(['asc', 'desc']),
   orderBy: PropTypes.string,
   rowCount: PropTypes.number,
-  headLabel: PropTypes.array,
+  headLabel: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      numeric: PropTypes.bool,
+      disablePadding: PropTypes.bool,
+      label: PropTypes.string.isRequired,
+      align: PropTypes.string,
+      width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    })
+  ).isRequired,
   numSelected: PropTypes.number,
   onRequestSort: PropTypes.func,
   onSelectAllClick: PropTypes.func,
