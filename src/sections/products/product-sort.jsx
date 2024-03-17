@@ -35,6 +35,8 @@ export default function ShopProductSort() {
         color="inherit"
         onClick={handleOpen}
         endIcon={<Iconify icon={open ? 'eva:chevron-up-fill' : 'eva:chevron-down-fill'} />}
+        sx={{ mr: 1 }}
+        keyboard={false}
       >
         Sort By:&nbsp;
         <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
@@ -46,6 +48,7 @@ export default function ShopProductSort() {
         open={!!open}
         anchorEl={open}
         onClose={handleClose}
+        disablePortal
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         slotProps={{
@@ -57,13 +60,11 @@ export default function ShopProductSort() {
             },
           },
         }}
+        sx={{ mt: 1.5 }}
       >
         {SORT_OPTIONS.map((option) => (
-          <MenuItem key={option.value} selected={option.value === 'newest'} onClick={handleClose}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </Menu>
-    </>
-  );
-}
+          <MenuItem
+            key={option.value}
+            selected={option.value === 'newest'}
+            onClick={handleClose}
+            sx={{ typography: 'body1', fontWeight: option.value === 'newest' ? 'fontWeightB
