@@ -1,1 +1,8 @@
-export { default as BlogView } from './blog-view';
+import BlogView from './blog-view';
+
+export { BlogView };
+
+
+import * as BlogView from './blog-view';
+
+export { BlogView };
