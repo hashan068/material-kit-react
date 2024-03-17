@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-
 import Paper from '@mui/material/Paper';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
@@ -7,7 +6,11 @@ import Typography from '@mui/material/Typography';
 
 // ----------------------------------------------------------------------
 
-export default function TableNoData({ query }) {
+export default function TableNoData({ query = '' }) {
+  if (query === '') {
+    return null;
+  }
+
   return (
     <TableRow>
       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -20,7 +23,7 @@ export default function TableNoData({ query }) {
             Not found
           </Typography>
 
-          <Typography variant="body2">
+          <Typography variant="body2" mb={2}>
             No results found for &nbsp;
             <strong>&quot;{query}&quot;</strong>.
             <br /> Try checking for typos or using complete words.
