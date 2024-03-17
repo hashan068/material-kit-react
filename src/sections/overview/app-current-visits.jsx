@@ -1,17 +1,11 @@
 import PropTypes from 'prop-types';
-
+import React from 'react';
+import { styled, useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import { styled, useTheme } from '@mui/material/styles';
-
-import { fNumber } from 'src/utils/format-number';
-
-import Chart, { useChart } from 'src/components/chart';
-
-// ----------------------------------------------------------------------
+import Chart from 'src/components/chart';
 
 const CHART_HEIGHT = 400;
-
 const LEGEND_HEIGHT = 72;
 
 const StyledChart = styled(Chart)(({ theme }) => ({
@@ -26,16 +20,30 @@ const StyledChart = styled(Chart)(({ theme }) => ({
   },
 }));
 
-// ----------------------------------------------------------------------
-
-export default function AppCurrentVisits({ title, subheader, chart, ...other }) {
+export default function AppCurrentVisits({ chart: propChart = {}, subheader = '', title = '', ...other }) {
   const theme = useTheme();
 
-  const { colors, series, options } = chart;
+  const chart = {
+    colors: PropTypes.arrayOf(PropTypes.string).isRequired,
+    series: PropTypes.arrayOf(
+      PropTypes.shape({
+        label: PropTypes.string.isRequired,
+        value: PropTypes.number.isRequired,
+      })
+    ).isRequired,
+    options: PropTypes.object,
+  };
 
-  const chartSeries = series.map((i) => i.value);
+  if (!propChart.series || !propChart.colors) {
+    console.error('Missing required props in chart:', chart);
+    return null;
+  }
 
-  const chartOptions = useChart({
+  const { colors, series, options } = propChart;
+
+  const chartSeries = series.map((i, index) => ({ key: index, ...i }));
+
+  const chartOptions = {
     chart: {
       sparkline: {
         enabled: true,
@@ -60,7 +68,7 @@ export default function AppCurrentVisits({ title, subheader, chart, ...other }) 
     tooltip: {
       fillSeriesColor: false,
       y: {
-        formatter: (value) => fNumber(value),
+        formatter: (value) => value.toFixed(2),
         title: {
           formatter: (seriesName) => `${seriesName}`,
         },
@@ -76,7 +84,7 @@ export default function AppCurrentVisits({ title, subheader, chart, ...other }) 
       },
     },
     ...options,
-  });
+  };
 
   return (
     <Card {...other}>
@@ -87,15 +95,4 @@ export default function AppCurrentVisits({ title, subheader, chart, ...other }) 
         type="pie"
         series={chartSeries}
         options={chartOptions}
-        width="100%"
-        height={280}
-      />
-    </Card>
-  );
-}
-
-AppCurrentVisits.propTypes = {
-  chart: PropTypes.object,
-  subheader: PropTypes.string,
-  title: PropTypes.string,
-};
+        width="100%
